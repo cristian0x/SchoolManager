@@ -86,7 +86,7 @@ class StudentServiceTest {
         // then
         assertThatThrownBy(() -> underTest.createStudent(student))
                 .isInstanceOf(StudentAlreadyExistsException.class)
-                .hasMessageContaining(String.format("Student with pesel %s already exists", student.getPesel()));
+                .hasMessageContaining(String.format("Student with a pesel %s already exists", student.getPesel()));
 
         verify(studentRepository, never()).save(any());
     }
@@ -130,7 +130,7 @@ class StudentServiceTest {
         // then
         assertThatThrownBy(() -> underTest.deleteStudent(student.getPesel()))
                 .isInstanceOf(StudentNotFoundException.class)
-                .hasMessageContaining(String.format("Student with pesel %s doesn't exist", student.getPesel()));
+                .hasMessageContaining(String.format("Student with a pesel %s doesn't exist", student.getPesel()));
 
         verify(studentRepository, never()).deleteById(any());
     }
@@ -162,7 +162,7 @@ class StudentServiceTest {
         // then
         String response = underTest.assignStudentToClass("3a", student.getPesel());
         assertThat(response).isEqualTo(
-                String.format("Student with pesel %s assigned to class %s successfully", student.getPesel(), "3a"));
+                String.format("Student with a pesel %s assigned to a class %s successfully", student.getPesel(), "3a"));
 
     }
 
@@ -181,7 +181,7 @@ class StudentServiceTest {
 
         assertThatThrownBy(() -> underTest.assignStudentToClass(_class.getId(), student.getPesel()))
                 .isInstanceOf(ClassNotFoundException.class)
-                .hasMessageContaining(String.format("Class with id %s doesn't exist", _class.getId()));
+                .hasMessageContaining(String.format("Class with an id %s doesn't exist", _class.getId()));
 
         verify(studentRepository, never()).assignStudentToClass(any(), any());
     }
@@ -202,7 +202,7 @@ class StudentServiceTest {
 
         assertThatThrownBy(() -> underTest.assignStudentToClass(_class.getId(), student.getPesel()))
                 .isInstanceOf(StudentNotFoundException.class)
-                .hasMessageContaining(String.format("Student with pesel %s doesn't exist", student.getPesel()));
+                .hasMessageContaining(String.format("Student with a pesel %s doesn't exist", student.getPesel()));
 
         verify(studentRepository, never()).assignStudentToClass(any(), any());
     }

@@ -2,9 +2,6 @@ package com.springbootschoolmanager.controller;
 
 import com.springbootschoolmanager.dto.AssignStudentToClassDTO;
 import com.springbootschoolmanager.entity.Student;
-import com.springbootschoolmanager.exception._class.ClassNotFoundException;
-import com.springbootschoolmanager.exception.student.StudentAlreadyExistsException;
-import com.springbootschoolmanager.exception.student.StudentNotFoundException;
 import com.springbootschoolmanager.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,37 +34,21 @@ public class StudentController {
 
     @PostMapping
     public ResponseEntity<?> createStudent(@Valid @RequestBody final Student student) {
-        try {
-            studentService.createStudent(student);
-        } catch (final StudentAlreadyExistsException studentAlreadyExistsException){
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(studentAlreadyExistsException.getMessage());
-        }
-
+        studentService.createStudent(student);
         return ResponseEntity.status(HttpStatus.CREATED).body("Student created successfully");
     }
 
     @DeleteMapping
     public ResponseEntity<?> deleteStudent(@RequestParam final String pesel) {
-        try {
-            String response = studentService.deleteStudent(pesel);
-            return ResponseEntity.ok(response);
-        } catch (final StudentNotFoundException studentNotFoundException) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(studentNotFoundException.getMessage());
-        }
+        String response = studentService.deleteStudent(pesel);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/assign")
     public ResponseEntity<?> assignStudentToClass(@Valid @RequestBody final AssignStudentToClassDTO
                                                               assignStudentToClassDTO) {
-        try {
-            String response = studentService.assignStudentToClass(assignStudentToClassDTO.getClass_id(),
-                    assignStudentToClassDTO.getPesel());
-            return ResponseEntity.ok(response);
-        } catch (final ClassNotFoundException | StudentNotFoundException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(exception.getMessage());
-        }
+        String response = studentService.assignStudentToClass(assignStudentToClassDTO.getClass_id(),
+                assignStudentToClassDTO.getPesel());
+        return ResponseEntity.ok(response);
     }
 }

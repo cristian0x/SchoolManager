@@ -1,7 +1,6 @@
 package com.springbootschoolmanager.controller;
 
 import com.springbootschoolmanager.entity._Class;
-import com.springbootschoolmanager.exception._class.ClassAlreadyExistsException;
 import com.springbootschoolmanager.service.ClassService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,12 +25,7 @@ public class ClassController {
 
     @PostMapping
     public ResponseEntity<?> createClass(@Valid @RequestBody final _Class _class) {
-        try {
-            classService.createClass(_class);
-        } catch (final ClassAlreadyExistsException classAlreadyExistsException) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(classAlreadyExistsException.getMessage());
-        }
-
+        classService.createClass(_class);
         return ResponseEntity.status(HttpStatus.CREATED).body("Class created successfully");
     }
 }
